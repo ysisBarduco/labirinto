@@ -27,8 +27,8 @@ typedef struct Nodo_Estatica{
 
 // Protótipos de função
 NODOPILHA Cria_Nodo();
-void gera_labirinto(LISTA *matriz);
-void imprime_labirinto(LISTA *matriz);
+void gera_labirinto(LISTA *labirinto);
+void imprime_labirinto(LISTA labirinto);
 void movimenta_rato();
 void push();
 void pop();
@@ -56,8 +56,8 @@ void gera_labirinto(LISTA *labirinto){
         for(j = 0; j < 30; j++){
 
             //Se for uma borda
-            if(i == 0 || i == 30 ||
-               j == 0 || j == 30){
+            if(i == 0 || i == 29 ||
+               j == 0 || j == 29){
                     labirinto->matriz[i][j] = 1; //Sempre será parede
             }
 
@@ -68,7 +68,7 @@ void gera_labirinto(LISTA *labirinto){
                 labirinto->matriz[i][j] = 0; //Define como livre
             }
             //Se for saida
-            else if(i == 29 && j == 29){
+            else if(i == 28 && j == 28){
                 labirinto->saida = (i * 100) + j; //Salva a posição de saida
                 labirinto->matriz[i][j] = 0; //Define como livre
             }
@@ -82,6 +82,20 @@ void gera_labirinto(LISTA *labirinto){
     }
 }
 
+// Função que imprime o estado atual do labirinto
+void imprime_labirinto(LISTA labirinto){
+    int i, j;
+
+    system("cls"); // Limpa a tela
+
+    for(i = 0; i < 30; i++){
+        for(j = 0; j < 30; j++){
+            printf("%d ", labirinto.matriz[i][j]); // Imprime a marca da posição
+        }
+        printf("\n");
+    }
+}
+
 // Função que movimenta o rato
     //Enquanto não encontrar a saida
     //Verifica se a posição que a direção aponta é livre
@@ -90,6 +104,10 @@ void gera_labirinto(LISTA *labirinto){
             //Se não há posição livre, marca atual como beco e retrocede para ultima visitada
 
 int main(){
+    LISTA lab;
+
+    gera_labirinto(&lab);
+    imprime_labirinto(lab);
 
     return 0;
 }

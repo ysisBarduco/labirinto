@@ -164,13 +164,7 @@ int pop(HEADERPILHA *P){
 void movimenta_rato(LISTA *labirinto, HEADERPILHA *P){
     int i, j;
     int posicao_atual = 0, lin = 0, col = 0, caminho = 1;
-    // Função que movimenta o rato
-    //Enquanto não encontrar a saida
-    //Verifica se a posição que a direção aponta é livre
-        //Se sim, empilha nova posição
-        //Se não, procura outra posição livre
-            //Se não há posição livre, marca atual como beco e retrocede para ultima visitada
-
+    
     do{
         //Posição inicial do rato:
         if(P->tamanho == 0){

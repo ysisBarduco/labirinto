@@ -33,6 +33,16 @@ void movimenta_rato();
 void push();
 void pop();
 
+// Principal ---------------------------------------------------
+int main(){
+    LISTA lab;
+
+    gera_labirinto(&lab);
+    imprime_labirinto(lab);
+
+    return 0;
+}
+
 // Implementação das funções
 
 NODOPILHA Cria_Nodo(){
@@ -96,6 +106,30 @@ void imprime_labirinto(LISTA labirinto){
     }
 }
 
+void push(HEADERPILHA *P, int linha, int coluna){
+    int posicao = 0;
+    NODOPILHA novo;
+
+    posicao = linha * 100 + coluna; //Calcula linha e coluna como um unico inteiro
+    novo->posicao = posicao;
+
+    if(P->tamanho == 0){
+        novo->prox = NULL;
+        P->topo = novo;
+    }
+    else{
+        novo->prox = P->topo;
+        P->topo = novo;
+    }
+
+    P->tamanho++;
+
+}
+
+void pop(){
+
+}
+
 // Função que movimenta o rato
     //Enquanto não encontrar a saida
     //Verifica se a posição que a direção aponta é livre
@@ -103,11 +137,5 @@ void imprime_labirinto(LISTA labirinto){
         //Se não, procura outra posição livre
             //Se não há posição livre, marca atual como beco e retrocede para ultima visitada
 
-int main(){
-    LISTA lab;
 
-    gera_labirinto(&lab);
-    imprime_labirinto(lab);
 
-    return 0;
-}

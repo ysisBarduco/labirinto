@@ -22,7 +22,7 @@ typedef struct Head{
 
 // Estrutura de dados para Lista Estática
 typedef struct Nodo_Estatica{
-    int matriz[30][30];
+    char matriz[30][30];
     int entrada, saida;
 }LISTA;
 
@@ -73,25 +73,32 @@ void gera_labirinto(LISTA *labirinto){
             //Se for uma borda
             if(i == 0 || i == 29 ||
                j == 0 || j == 29){
-                    labirinto->matriz[i][j] = 1; //Sempre será parede
+                    labirinto->matriz[i][j] = '#'; //Sempre será parede
             }
 
             //Entrada e saida são livres
             //Se for entrada
             else if(i == 2 && j == 2){
                 labirinto->entrada = (i * 100) + j; //Salva a posição de entrada
-                labirinto->matriz[i][j] = 0; //Define como livre
+                labirinto->matriz[i][j] = ' '; //Define como livre
             }
             //Se for saida
             else if(i == 28 && j == 28){
                 labirinto->saida = (i * 100) + j; //Salva a posição de saida
-                labirinto->matriz[i][j] = 0; //Define como livre
+                labirinto->matriz[i][j] = ' '; //Define como livre
             }
 
             //Gera um labirinto aleatório
             else{
                 int marca = rand() % 2;
-                labirinto->matriz[i][j] = marca;
+
+                if(marca == 0){
+                    labirinto->matriz[i][j] = ' ';
+                }
+                else{
+                    labirinto->matriz[i][j] = '#';
+                }
+                
             }
         }
     }
@@ -111,7 +118,7 @@ void imprime_labirinto(LISTA *labirinto){
 
     for(i = 0; i < 30; i++){
         for(j = 0; j < 30; j++){
-            printf("%d ", labirinto->matriz[i][j]); // Imprime a marca da posição
+            printf("%c ", labirinto->matriz[i][j]); // Imprime a marca da posição
         }
         printf("\n");
     }
@@ -139,7 +146,6 @@ void push(HEADERPILHA *P, int linha, int coluna){
 
 int pop(HEADERPILHA *P){
     NODOPILHA aux;
-    int posicao_beco = 0;
 
     aux = P->topo;
     P->topo = P->topo->prox;
@@ -169,49 +175,49 @@ void movimenta_rato(LISTA *labirinto, HEADERPILHA *P){
         //Posição inicial do rato:
         if(P->tamanho == 0){
             push(P, 2, 2);
-            labirinto->matriz[2][2] = 9;
+            labirinto->matriz[2][2] = 'R';
         }
         else{
             lin = P->topo->posicao / 100; //Calcula a linha em que o rato está
             col = P->topo->posicao % 100; //Calcula a coluna em que o rato está
 
             //Se a posição acima está livre, movimenta para cima
-            if(labirinto->matriz[lin-1][col] == 0){
+            if(labirinto->matriz[lin-1][col] == ' '){
                 push(P, lin-1, col);
-                labirinto->matriz[lin][col] = 2;
-                labirinto->matriz[lin-1][col] = 9;
+                labirinto->matriz[lin][col] = '.';
+                labirinto->matriz[lin-1][col] = 'R';
             }
             //Se a posição abaixo está livre, movimenta para baixo
-            else if(labirinto->matriz[lin+1][col] == 0){
+            else if(labirinto->matriz[lin+1][col] == ' '){
                 push(P, lin+1, col);
-                labirinto->matriz[lin][col] = 2;
-                labirinto->matriz[lin+1][col] = 9;
+                labirinto->matriz[lin][col] = '.';
+                labirinto->matriz[lin+1][col] = 'R';
             }
             //Se a posição a direita está livre, movimenta para direita
-            else if(labirinto->matriz[lin][col-1] == 0){
+            else if(labirinto->matriz[lin][col-1] == ' '){
                 push(P, lin, col-1);
-                labirinto->matriz[lin][col] = 2;
-                labirinto->matriz[lin][col-1] = 9;
+                labirinto->matriz[lin][col] = '.';
+                labirinto->matriz[lin][col-1] = 'R';
             }
             //Se a posição a esquerda está livre, movimenta para esquerda
-            else if(labirinto->matriz[lin][col+1] == 0){
+            else if(labirinto->matriz[lin][col+1] == ' '){
                 push(P, lin, col+1);
-                labirinto->matriz[lin][col] = 2;
-                labirinto->matriz[lin][col+1] = 9;
+                labirinto->matriz[lin][col] = '.';
+                labirinto->matriz[lin][col+1] = 'R';
             }
             //Senão, retrocede
             else{
-                labirinto->matriz[lin][col] = 3; //Marca atual como beco
+                labirinto->matriz[lin][col] = 'x'; //Marca atual como beco
                 caminho = pop(P);
 
                 if(caminho == 0){
-                    labirinto->matriz[lin][col] = 6; //Se não há caminho, o rato morre
+                    labirinto->matriz[lin][col] = 'M'; //Se não há caminho, o rato morre
                 }
                 else{
                     lin = P->topo->posicao / 100; //Calcula a linha em que o rato retrocedeu
                     col = P->topo->posicao % 100; //Calcula a coluna em que o rato retrocedeu
 
-                    labirinto->matriz[lin][col] = 9;
+                    labirinto->matriz[lin][col] = 'R';
                 }
             }
         }

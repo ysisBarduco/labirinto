@@ -65,6 +65,7 @@ NODOPILHA Cria_Nodo(){
 // Função que gera a matriz do labirinto:
 void gera_labirinto(LISTA *labirinto){
     int i, j;
+    srand(time(NULL)); //Inicializa rand()
 
     for(i = 0; i < 30; i++){
         for(j = 0; j < 30; j++){
@@ -202,7 +203,7 @@ void movimenta_rato(LISTA *labirinto, HEADERPILHA *P){
             }
             //Senão, retrocede
             else{
-                labirinto->matriz[lin][col] = 3;
+                labirinto->matriz[lin][col] = 3; //Marca atual como beco
                 pop(P);
 
                 lin = P->topo->posicao / 100; //Calcula a linha em que o rato está

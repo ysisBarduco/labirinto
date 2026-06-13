@@ -141,24 +141,23 @@ int pop(HEADERPILHA *P){
     NODOPILHA aux;
     int posicao_beco = 0;
 
-    //Se o rato não tiver se movimentado
-    if(P->tamanho == 0){
-        return 202; //Retorna posição do inicio
-    }
-
     aux = P->topo;
-    posicao_beco = P->topo->posicao;
     P->topo = P->topo->prox;
     free(aux);
     P->tamanho--;
 
-    return posicao_beco; //Retorna a posição que o rato estava
+    //Se não houver mais como retroceder
+    if(P->tamanho == 0){
+        return 0; //Não há um caminho, retorna 0 (falso)
+    }
+
+    return 1; //Ainda há um caminho, retorna 1 (verdadeiro)
 
 }
 
 void movimenta_rato(LISTA *labirinto, HEADERPILHA *P){
     int i, j;
-    int posicao_atual = 0, lin = 0, col = 0;
+    int posicao_atual = 0, lin = 0, col = 0, caminho = 1;
     // Função que movimenta o rato
     //Enquanto não encontrar a saida
     //Verifica se a posição que a direção aponta é livre
@@ -173,9 +172,8 @@ void movimenta_rato(LISTA *labirinto, HEADERPILHA *P){
             labirinto->matriz[2][2] = 9;
         }
         else{
-            posicao_atual = P->topo->posicao; //TALVEZ NÃO SEJA NECESSÁRIO, VERIFIQUE
-            lin = posicao_atual / 100; //Calcula a linha em que o rato está
-            col = posicao_atual % 100; //Calcula a coluna em que o rato está
+            lin = P->topo->posicao / 100; //Calcula a linha em que o rato está
+            col = P->topo->posicao % 100; //Calcula a coluna em que o rato está
 
             //Se a posição acima está livre, movimenta para cima
             if(labirinto->matriz[lin-1][col] == 0){
@@ -204,13 +202,19 @@ void movimenta_rato(LISTA *labirinto, HEADERPILHA *P){
             //Senão, retrocede
             else{
                 labirinto->matriz[lin][col] = 3; //Marca atual como beco
-                pop(P);
+                caminho = pop(P);
 
-                lin = P->topo->posicao / 100; //Calcula a linha em que o rato está
-                col = P->topo->posicao % 100; //Calcula a coluna em que o rato está
-                labirinto->matriz[lin][col] = 9;
+                if(caminho == 0){
+                    labirinto->matriz[lin][col] = 6; //Se não há caminho, o rato morre
+                }
+                else{
+                    lin = P->topo->posicao / 100; //Calcula a linha em que o rato retrocedeu
+                    col = P->topo->posicao % 100; //Calcula a coluna em que o rato retrocedeu
+
+                    labirinto->matriz[lin][col] = 9;
+                }
             }
         }
         imprime_labirinto(labirinto);
-    }while(P->topo->posicao != labirinto->saida); //Executa enquanto não encontrar a saida
+    }while((caminho == 1) && (P->topo->posicao != labirinto->saida)); //Executa enquanto não encontrar a saida e haver um caminho
 }

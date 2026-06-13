@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <windows.h>
 
 // Estrutura de dados Pilha
 typedef struct Nodo_Pilha{
@@ -40,6 +41,7 @@ int main(){
     HEADERPILHA P;
 
     inicializa_pilha(&P);
+    gera_labirinto(&lab);
     movimenta_rato(&lab, &P);
 
     return 0;
@@ -103,6 +105,7 @@ void inicializa_pilha(HEADERPILHA *P){
 void imprime_labirinto(LISTA *labirinto){
     int i, j;
 
+    Sleep(1000); // Aguarda meio segundo
     system("cls"); // Limpa a tela
 
     for(i = 0; i < 30; i++){
@@ -116,7 +119,7 @@ void imprime_labirinto(LISTA *labirinto){
 void push(HEADERPILHA *P, int linha, int coluna){
     int posicao = 0;
     NODOPILHA novo;
-
+    novo = Cria_Nodo();
     posicao = linha * 100 + coluna; //Calcula linha e coluna como um unico inteiro
     novo->posicao = posicao;
 
@@ -165,7 +168,7 @@ void movimenta_rato(LISTA *labirinto, HEADERPILHA *P){
     do{
         //Posição inicial do rato:
         if(P->tamanho == 0){
-            push(&P, 2, 2);
+            push(P, 2, 2);
             labirinto->matriz[2][2] = 9;
         }
         else{
@@ -175,32 +178,32 @@ void movimenta_rato(LISTA *labirinto, HEADERPILHA *P){
 
             //Se a posição acima está livre, movimenta para cima
             if(labirinto->matriz[lin-1][col] == 0){
-                push(&P, lin-1, col);
+                push(P, lin-1, col);
                 labirinto->matriz[lin][col] = 2;
                 labirinto->matriz[lin-1][col] = 9;
             }
             //Se a posição abaixo está livre, movimenta para baixo
-            else if(labirinto->matriz[lin+1][col]){
-                push(&P, lin+1, col);
+            else if(labirinto->matriz[lin+1][col] == 0){
+                push(P, lin+1, col);
                 labirinto->matriz[lin][col] = 2;
                 labirinto->matriz[lin+1][col] = 9;
             }
             //Se a posição a direita está livre, movimenta para direita
-            else if(labirinto->matriz[lin][col-1]){
-                push(&P, lin, col-1);
+            else if(labirinto->matriz[lin][col-1] == 0){
+                push(P, lin, col-1);
                 labirinto->matriz[lin][col] = 2;
                 labirinto->matriz[lin][col-1] = 9;
             }
             //Se a posição a esquerda está livre, movimenta para esquerda
-            else if(labirinto->matriz[lin][col+1]){
-                push(&P, lin, col+1);
+            else if(labirinto->matriz[lin][col+1] == 0){
+                push(P, lin, col+1);
                 labirinto->matriz[lin][col] = 2;
                 labirinto->matriz[lin][col+1] = 9;
             }
             //Senão, retrocede
             else{
                 labirinto->matriz[lin][col] = 3;
-                pop(&P);
+                pop(P);
 
                 lin = P->topo->posicao / 100; //Calcula a linha em que o rato está
                 col = P->topo->posicao % 100; //Calcula a coluna em que o rato está

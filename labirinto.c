@@ -30,8 +30,8 @@ NODOPILHA Cria_Nodo();
 void gera_labirinto(LISTA *labirinto);
 void imprime_labirinto(LISTA labirinto);
 void movimenta_rato();
-void push();
-void pop();
+void push(HEADERPILHA *P, int linha, int coluna);
+int pop(HEADERPILHA *P);
 
 // Principal ---------------------------------------------------
 int main(){

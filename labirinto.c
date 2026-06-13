@@ -126,7 +126,22 @@ void push(HEADERPILHA *P, int linha, int coluna){
 
 }
 
-void pop(){
+int pop(HEADERPILHA *P){
+    NODOPILHA aux;
+    int posicao_beco = 0;
+
+    //Se o rato não tiver se movimentado
+    if(P->tamanho == 0){
+        return 202; //Retorna posição do inicio
+    }
+
+    aux = P->topo;
+    posicao_beco = P->topo->posicao;
+    P->topo = P->topo->prox;
+    free(aux);
+    P->tamanho--;
+
+    return posicao_beco; //Retorna a posição que o rato estava
 
 }
 

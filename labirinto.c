@@ -27,8 +27,9 @@ typedef struct Nodo_Estatica{
 
 // Protótipos de função
 NODOPILHA Cria_Nodo();
+void inicializa_pilha(HEADERPILHA *P);
 void gera_labirinto(LISTA *labirinto);
-void imprime_labirinto(LISTA labirinto);
+void imprime_labirinto(LISTA *labirinto);
 void movimenta_rato(LISTA *labirinto, HEADERPILHA *P);
 void push(HEADERPILHA *P, int linha, int coluna);
 int pop(HEADERPILHA *P);
@@ -36,9 +37,10 @@ int pop(HEADERPILHA *P);
 // Principal ---------------------------------------------------
 int main(){
     LISTA lab;
+    HEADERPILHA P;
 
-    gera_labirinto(&lab);
-    imprime_labirinto(lab);
+    inicializa_pilha(&P);
+    movimenta_rato(&lab, &P);
 
     return 0;
 }
@@ -92,34 +94,24 @@ void gera_labirinto(LISTA *labirinto){
     }
 }
 
+void inicializa_pilha(HEADERPILHA *P){
+    P->tamanho = 0;
+    P->topo = NULL;
+}
+
 // Função que imprime o estado atual do labirinto
-void imprime_labirinto(LISTA labirinto){
+void imprime_labirinto(LISTA *labirinto){
     int i, j;
 
     system("cls"); // Limpa a tela
 
     for(i = 0; i < 30; i++){
         for(j = 0; j < 30; j++){
-            printf("%d ", labirinto.matriz[i][j]); // Imprime a marca da posição
+            printf("%d ", labirinto->matriz[i][j]); // Imprime a marca da posição
         }
         printf("\n");
     }
 }
-
-void movimenta_rato(LISTA *labirinto, HEADERPILHA *P){
-    
-    // Função que movimenta o rato
-    //Enquanto não encontrar a saida
-    //Verifica se a posição que a direção aponta é livre
-        //Se sim, empilha nova posição
-        //Se não, procura outra posição livre
-            //Se não há posição livre, marca atual como beco e retrocede para ultima visitada
-
-    do{
-        
-    }while(P->topo->posicao != labirinto->saida);
-}
-
 
 void push(HEADERPILHA *P, int linha, int coluna){
     int posicao = 0;
@@ -160,5 +152,61 @@ int pop(HEADERPILHA *P){
 
 }
 
+void movimenta_rato(LISTA *labirinto, HEADERPILHA *P){
+    int i, j;
+    int posicao_atual = 0, lin = 0, col = 0;
+    // Função que movimenta o rato
+    //Enquanto não encontrar a saida
+    //Verifica se a posição que a direção aponta é livre
+        //Se sim, empilha nova posição
+        //Se não, procura outra posição livre
+            //Se não há posição livre, marca atual como beco e retrocede para ultima visitada
 
+    do{
+        //Posição inicial do rato:
+        if(P->tamanho == 0){
+            push(&P, 2, 2);
+            labirinto->matriz[2][2] = 9;
+        }
+        else{
+            posicao_atual = P->topo->posicao; //TALVEZ NÃO SEJA NECESSÁRIO, VERIFIQUE
+            lin = posicao_atual / 100; //Calcula a linha em que o rato está
+            col = posicao_atual % 100; //Calcula a coluna em que o rato está
 
+            //Se a posição acima está livre, movimenta para cima
+            if(labirinto->matriz[lin-1][col] == 0){
+                push(&P, lin-1, col);
+                labirinto->matriz[lin][col] = 2;
+                labirinto->matriz[lin-1][col] = 9;
+            }
+            //Se a posição abaixo está livre, movimenta para baixo
+            else if(labirinto->matriz[lin+1][col]){
+                push(&P, lin+1, col);
+                labirinto->matriz[lin][col] = 2;
+                labirinto->matriz[lin+1][col] = 9;
+            }
+            //Se a posição a direita está livre, movimenta para direita
+            else if(labirinto->matriz[lin][col-1]){
+                push(&P, lin, col-1);
+                labirinto->matriz[lin][col] = 2;
+                labirinto->matriz[lin][col-1] = 9;
+            }
+            //Se a posição a esquerda está livre, movimenta para esquerda
+            else if(labirinto->matriz[lin][col+1]){
+                push(&P, lin, col+1);
+                labirinto->matriz[lin][col] = 2;
+                labirinto->matriz[lin][col+1] = 9;
+            }
+            //Senão, retrocede
+            else{
+                labirinto->matriz[lin][col] = 3;
+                pop(&P);
+
+                lin = P->topo->posicao / 100; //Calcula a linha em que o rato está
+                col = P->topo->posicao % 100; //Calcula a coluna em que o rato está
+                labirinto->matriz[lin][col] = 9;
+            }
+        }
+        imprime_labirinto(labirinto);
+    }while(P->topo->posicao != labirinto->saida); //Executa enquanto não encontrar a saida
+}

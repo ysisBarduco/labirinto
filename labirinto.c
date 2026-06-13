@@ -29,7 +29,7 @@ typedef struct Nodo_Estatica{
 NODOPILHA Cria_Nodo();
 void gera_labirinto(LISTA *labirinto);
 void imprime_labirinto(LISTA labirinto);
-void movimenta_rato();
+void movimenta_rato(LISTA *labirinto, HEADERPILHA *P);
 void push(HEADERPILHA *P, int linha, int coluna);
 int pop(HEADERPILHA *P);
 
@@ -106,6 +106,21 @@ void imprime_labirinto(LISTA labirinto){
     }
 }
 
+void movimenta_rato(LISTA *labirinto, HEADERPILHA *P){
+    
+    // Função que movimenta o rato
+    //Enquanto não encontrar a saida
+    //Verifica se a posição que a direção aponta é livre
+        //Se sim, empilha nova posição
+        //Se não, procura outra posição livre
+            //Se não há posição livre, marca atual como beco e retrocede para ultima visitada
+
+    do{
+        
+    }while(P->topo->posicao != labirinto->saida);
+}
+
+
 void push(HEADERPILHA *P, int linha, int coluna){
     int posicao = 0;
     NODOPILHA novo;
@@ -144,13 +159,6 @@ int pop(HEADERPILHA *P){
     return posicao_beco; //Retorna a posição que o rato estava
 
 }
-
-// Função que movimenta o rato
-    //Enquanto não encontrar a saida
-    //Verifica se a posição que a direção aponta é livre
-        //Se sim, empilha nova posição
-        //Se não, procura outra posição livre
-            //Se não há posição livre, marca atual como beco e retrocede para ultima visitada
 
 
 

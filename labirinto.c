@@ -123,7 +123,7 @@ void imprime_labirinto(LISTA *labirinto){
                 printf(". ");
             }
             else if(labirinto->matriz[i][j] == 3){
-                printf("░ ");
+                printf("x ");
             }
             else if(labirinto->matriz[i][j] == 9){
                 printf("☺ ");

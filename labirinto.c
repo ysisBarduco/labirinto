@@ -64,10 +64,12 @@ NODOPILHA Cria_Nodo(){
     return p;
 }
 
-// Função que gera a matriz do labirinto:
 void gera_labirinto(LISTA *labirinto){
     int i, j;
+    int s = 0;
     srand(time(NULL)); //Inicializa rand()
+
+    s = (rand() % 27) + 2;
 
     for(i = 0; i < 30; i++){
         for(j = 0; j < 30; j++){
@@ -85,7 +87,7 @@ void gera_labirinto(LISTA *labirinto){
                 labirinto->matriz[i][j] = 0; //Define como livre
             }
             //Se for saida
-            else if(i == 28 && j == 28){
+            else if(i == s-1 && j == s){
                 labirinto->saida = (i * 100) + j; //Salva a posição de saida
                 labirinto->matriz[i][j] = 0; //Define como livre
             }
@@ -104,12 +106,13 @@ void inicializa_pilha(HEADERPILHA *P){
     P->topo = NULL;
 }
 
-// Função que imprime o estado atual do labirinto
 void imprime_labirinto(LISTA *labirinto){
     int i, j;
 
     Sleep(1000); // Aguarda um segundo
     system("cls"); // Limpa a tela
+
+    printf("\nEntrada: %d ---> Saida: %d\n", labirinto->entrada, labirinto->saida);
 
     for(i = 0; i < 30; i++){
         for(j = 0; j < 30; j++){
@@ -117,7 +120,7 @@ void imprime_labirinto(LISTA *labirinto){
                 printf("  ");
             }
             else if(labirinto->matriz[i][j] == 1){
-                printf("■ ");
+                printf("# ");
             }
             else if(labirinto->matriz[i][j] == 2){
                 printf(". ");
@@ -126,10 +129,10 @@ void imprime_labirinto(LISTA *labirinto){
                 printf("x ");
             }
             else if(labirinto->matriz[i][j] == 9){
-                printf("☺ ");
+                printf("R ");
             }
             else{
-                printf("☻ ");
+                printf("M ");
             }
         }
         printf("\n");
@@ -175,7 +178,7 @@ int pop(HEADERPILHA *P){
 
 void movimenta_rato(LISTA *labirinto, HEADERPILHA *P){
     int i, j;
-    int posicao_atual = 0, lin = 0, col = 0, caminho = 1;
+    int lin = 0, col = 0, caminho = 1;
 
 
     do{

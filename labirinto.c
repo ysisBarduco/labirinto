@@ -112,7 +112,7 @@ void imprime_labirinto(LISTA *labirinto){
     Sleep(1000); // Aguarda um segundo
     system("cls"); // Limpa a tela
 
-    printf("\nEntrada: %d ---> Saida: %d\n", labirinto->entrada, labirinto->saida);
+    printf("\n======================== LABIRINTO ========================\n");
 
     for(i = 0; i < 30; i++){
         for(j = 0; j < 30; j++){
@@ -137,6 +137,8 @@ void imprime_labirinto(LISTA *labirinto){
         }
         printf("\n");
     }
+
+    printf("================ Entrada: %d | Saida: %d ================\n", labirinto->entrada, labirinto->saida);
 }
 
 void push(HEADERPILHA *P, int linha, int coluna){

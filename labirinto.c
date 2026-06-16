@@ -129,13 +129,13 @@ void imprime_labirinto(LISTA *labirinto){
                 printf("x ");
             }
             else if(labirinto->matriz[i][j] == 9){
-                printf("R ");
+                printf(":)");
             }
           	else if(labirinto->matriz[i][j] == 7){
-                printf("$ ");
+                printf(":D");
             }
             else{
-                printf("M ");
+                printf(":C");
             }
         }
         printf("\n");

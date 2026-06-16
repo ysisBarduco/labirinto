@@ -141,7 +141,7 @@ void imprime_labirinto(LISTA *labirinto){
         printf("\n");
     }
 
-    printf("================ Entrada: %d | Saida: %d ================\n", labirinto->entrada, labirinto->saida);
+    printf("============ Entrada: [%d][%d] | Saida: [%d][%d] =============\n", labirinto->entrada / 100, labirinto->entrada % 100, labirinto->saida /100, labirinto->saida %100);
 }
 
 void push(HEADERPILHA *P, int linha, int coluna){

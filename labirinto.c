@@ -131,6 +131,9 @@ void imprime_labirinto(LISTA *labirinto){
             else if(labirinto->matriz[i][j] == 9){
                 printf("R ");
             }
+          	else if(labirinto->matriz[i][j] == 7){
+                printf("$ ");
+            }
             else{
                 printf("M ");
             }
@@ -197,25 +200,53 @@ void movimenta_rato(LISTA *labirinto, HEADERPILHA *P){
             if(labirinto->matriz[lin-1][col] == 0){
                 push(P, lin-1, col);
                 labirinto->matriz[lin][col] = 2;
-                labirinto->matriz[lin-1][col] = 9;
+                
+               // Verifica se saiu
+            	if(P->topo->posicao == labirinto->saida){  		
+        				labirinto->matriz[lin-1][col] = 7;
+		  			}
+		  			else{ // Sen�o, apenas movimenta
+		  				labirinto->matriz[lin-1][col] = 9;
+					  }   
             }
             //Se a posição abaixo está livre, movimenta para baixo
             else if(labirinto->matriz[lin+1][col] == 0){
                 push(P, lin+1, col);
                 labirinto->matriz[lin][col] = 2;
-                labirinto->matriz[lin+1][col] = 9;
+                
+               // Verifica se saiu
+            	if(P->topo->posicao == labirinto->saida){  		
+        				labirinto->matriz[lin+1][col] = 7;
+		  			}
+		  			else{ // Sen�o, apenas movimenta
+		  				labirinto->matriz[lin+1][col] = 9;
+					  }   
             }
             //Se a posição a esquerda está livre, movimenta para esquerda
             else if(labirinto->matriz[lin][col-1] == 0){
                 push(P, lin, col-1);
                 labirinto->matriz[lin][col] = 2;
-                labirinto->matriz[lin][col-1] = 9;
+                
+               // Verifica se saiu
+            	if(P->topo->posicao == labirinto->saida){  		
+        				labirinto->matriz[lin][col-1] = 7;
+		  			}
+		  			else{ // Sen�o, apenas movimenta
+		  				labirinto->matriz[lin][col-1] = 9;
+					  }   
             }
             //Se a posição a direita está livre, movimenta para direita
             else if(labirinto->matriz[lin][col+1] == 0){
                 push(P, lin, col+1);
                 labirinto->matriz[lin][col] = 2;
-                labirinto->matriz[lin][col+1] = 9;
+                
+               // Verifica se saiu
+            	if(P->topo->posicao == labirinto->saida){  		
+        				labirinto->matriz[lin][col+1] = 7;
+		  			}
+		  			else{ // Sen�o, apenas movimenta
+		  				labirinto->matriz[lin][col+1] = 9;
+					  }          
             }
             //Senão, retrocede
             else{
@@ -233,6 +264,7 @@ void movimenta_rato(LISTA *labirinto, HEADERPILHA *P){
                 }
             }
         }
+        
         imprime_labirinto(labirinto);
     }while((caminho == 1) && (P->topo->posicao != labirinto->saida)); //Executa enquanto não encontrar a saida e haver um caminho
 }
